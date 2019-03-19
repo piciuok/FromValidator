@@ -30,7 +30,7 @@ Validator.prototype = {
 
   /**
    * Get Value from self deep properties, eg. path = translations.Rules.Errors.required, return a string
-   * 'To pole jest wymagane'
+   * 'This field is required.'
    **/
   _getDeepPropertyValue: function(start = this, path = '') {
     let tree = path.split('.');
@@ -63,7 +63,8 @@ Validator.prototype = {
 
   /**
    * Get translated message
-   * TODO
+   * TODO: set locale.
+   * TODO: make hints for field.
    **/
   getTranslated: function(path) {
     return this._getDeepPropertyValue(this.translations, path);
@@ -109,7 +110,9 @@ Validator.prototype = {
    **/
   validateField: function(field = null, forceValue = false) {
     if(field === null) {
-      console.log(`You don't pass a field`);
+      if(this.debug) {
+        console.log(`You don't pass a field`);
+      }
       return;
     }
 
@@ -148,7 +151,9 @@ Validator.prototype = {
       let _valid = true;
 
       if(this.rules[rule] === undefined) {
-        console.log(`Rule not exists for: ${rule}`);
+        if(this.debug) {
+          console.log(`Rule not exists for: ${rule}`);
+        }
       } else {
         _valid = this.rules[rule].valid(value, field);
 
@@ -177,7 +182,6 @@ Validator.prototype = {
    * Remove field errors from HTML
    **/
   _removeFieldErrors: function(fieldName, field) {
-    // return;
     if(this.errors[fieldName] !== undefined) {
       delete this.errors[fieldName];
     }
@@ -199,7 +203,6 @@ Validator.prototype = {
    * Clear all messages from whole document
    **/
   removeAllErrorMessages: function() {
-    // return;
     this.errors = {};
 
     const errorsMessages = document.querySelectorAll(`.${this.errorWrapperClass}`);
@@ -225,7 +228,9 @@ Validator.prototype = {
    **/
   addErrorMessagesToField: function(fieldName = null, messages) {
     if(fieldName === null || fieldName === "") {
-      console.log(`No fieldName passed`);
+      if(this.debug) {
+        console.log(`No fieldName passed`);
+      }
       return;
     }
 

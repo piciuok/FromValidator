@@ -138,10 +138,10 @@
     var Translations = {
       "Rules": {
         "Errors": {
-          "required": "To pole jest wymagane",
-          "phone": "Niepoprawny format numeru",
-          "email": "Niepoprawny format adresu email",
-          "password": "Hasło zbyt słabe"
+          "required": "This field is required.",
+          "phone": "Incorrect phone format. Should be exact 9 digits.",
+          "email": "Incorrect email address.",
+          "password": "Password is too week. Password should contain 1 uppercase, 1 lowercase, 1 digit, 1 special char and be greater or equal 9 chars."
         }
       }
     };
@@ -173,7 +173,7 @@
 
       /**
        * Get Value from self deep properties, eg. path = translations.Rules.Errors.required, return a string
-       * 'To pole jest wymagane'
+       * 'This field is required.'
        **/
       _getDeepPropertyValue: function(start = this, path = '') {
         let tree = path.split('.');
@@ -206,7 +206,8 @@
 
       /**
        * Get translated message
-       * TODO
+       * TODO: set locale.
+       * TODO: make hints for field.
        **/
       getTranslated: function(path) {
         return this._getDeepPropertyValue(this.translations, path);
@@ -252,7 +253,9 @@
        **/
       validateField: function(field = null, forceValue = false) {
         if(field === null) {
-          console.log(`You don't pass a field`);
+          if(this.debug) {
+            console.log(`You don't pass a field`);
+          }
           return;
         }
 
@@ -291,7 +294,9 @@
           let _valid = true;
 
           if(this.rules[rule] === undefined) {
-            console.log(`Rule not exists for: ${rule}`);
+            if(this.debug) {
+              console.log(`Rule not exists for: ${rule}`);
+            }
           } else {
             _valid = this.rules[rule].valid(value, field);
 
@@ -320,7 +325,6 @@
        * Remove field errors from HTML
        **/
       _removeFieldErrors: function(fieldName, field) {
-        // return;
         if(this.errors[fieldName] !== undefined) {
           delete this.errors[fieldName];
         }
@@ -342,7 +346,6 @@
        * Clear all messages from whole document
        **/
       removeAllErrorMessages: function() {
-        // return;
         this.errors = {};
 
         const errorsMessages = document.querySelectorAll(`.${this.errorWrapperClass}`);
@@ -368,7 +371,9 @@
        **/
       addErrorMessagesToField: function(fieldName = null, messages) {
         if(fieldName === null || fieldName === "") {
-          console.log(`No fieldName passed`);
+          if(this.debug) {
+            console.log(`No fieldName passed`);
+          }
           return;
         }
 

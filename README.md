@@ -1,5 +1,7 @@
 # **mp-form-validator**
-It's just a simple form validator with events, custom rules, translations, overriding functions.
+It's just a simple form validator with hooks, custom rules, translations, overriding functions.
+
+Bundle size: **5,11KB**
 
 # `In Development`
 
@@ -34,7 +36,7 @@ Default params object:
 
 ```javascript
 var paramas = {
-    debug: true,
+    debug: false,
     errorWrapperClass: 'form-errors-msgs',
     errorClass: 'single-error-msg',
     errorPosition: 'before',
@@ -50,7 +52,7 @@ var paramas = {
 | validateForm|form|boolean|validate passed form|
 | isFormValid|-|boolean|check if form is valid|
 | removeAllErrorMessages|-|void|remove all added messages to form elements|
-| getErrors|-|object|get all form elements|
+| getErrors|-|object|get all form errors|
 
 ...where:
 - field - DOM element
@@ -84,14 +86,14 @@ var params = {
 }
 ```
 
-firstName, phone, email is just name of form element. **Each form element must have a name.**
+firstName, phone, email are just name of form elements. **Each form element must have a unique name.**
 
-Order of processing rules is just order of rules in your object - for phone: first will be required, second phone.
+Order of processing rules is just order of rules in your **Constraint** object - for field with name phone first will be 'required', second 'phone'.
 
 
 ## ...and rules
 
-For now, we have only 3 rules available - yes - it's simple but powerful validator :>
+For now, we have only 4 rules available - yes - it's simple but powerful validator :>
 
 | ruleName | description |
 | --- | --- |
@@ -178,9 +180,10 @@ var params = {
 }
 ```
 
-
 Notice: 
-- There's no validation on submit, you have full control over when & how
+- There's no auto-validation on submit, you have full control over when & how. More in index.html
+
+Sorry for everything - it's my first package, if you found a bug, report - thanks!
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
