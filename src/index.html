@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MP Form Validator</title>
+    <style>
+        .form-errors-msgs {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .single-error-msg {
+            background-color: #c80000;
+            display: inline-block;
+            color: white;
+            font-size: 10px;
+            min-width: 150px;
+        }
+
+        .input-wrap {
+            display: block;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <form id="test-form" novalidate>
+        <label>Text</label>
+        <div class="input-wrap">
+            <input type="text" name="inputText"/>
+        </div>
+
+        <label>Email</label>
+        <div class="input-wrap">
+            <input type="email" name="inputEmail"/>
+        </div>
+
+        <label>Phone</label>
+        <div class="input-wrap">
+            <input type="phone" name="inputPhone"/>
+        </div>
+
+        <label>Password</label>
+        <div class="input-wrap">
+            <input type="password" name="inputPassword"/>
+        </div>
+
+        <label>Radio</label>
+        <div class="input-wrap">
+            <input type="radio" name="inputRadio" value="value1"/>
+            <input type="radio" name="inputRadio" value="value2"/>
+            <input type="radio" name="inputRadio" value="value3"/>
+        </div>
+
+        <label>Checkbox</label>
+        <div class="input-wrap">
+            <input type="checkbox" name="inputCheckbox" value="value1"/>
+            <input type="checkbox" name="inputCheckbox" value="value2"/>
+            <input type="checkbox" name="inputCheckbox" value="value3"/>
+        </div>
+
+        <label>Select</label>
+        <div class="input-wrap">
+            <select name="inputSelect">
+                <option value>Wybierz opcje</option>
+                <option value="value1">value1</option>
+                <option value="value2">value2</option>
+                <option value="value3">value3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+            </select>
+        </div>
+
+        <label>Textarea</label>
+        <div class="input-wrap">
+            <textarea name="inputTextarea"></textarea>
+        </div>
+        <button type="submit">Validate</button>
+    </form>
+</body>
+</html>
