@@ -17,6 +17,10 @@ or
 ````javascript
 import "mp-form-validator/bundle/validator.bundle.min.js"
 ````
+or
+```html
+<script src="//unpkg.com/mp-form-validator@1.0.10/bundle/validator.bundle.min.js"></script>
+```
 Next, create new Validator instance:
 ```javascript
 var v = new Validator({...params});
