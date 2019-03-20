@@ -11,7 +11,7 @@ export default {
                         anyChecked = true;
                         return true;
                     }
-                })
+                });
                 return anyChecked;
 
             } else if(field.type === 'select') {
@@ -22,26 +22,25 @@ export default {
     },
     'phone' : {
         valid: (value, field) => {
-            const re = /([0-9]+){9}/;
-            return re.test(value)
+            const re = /^([0-9]{9})$/;
+            return re.test(value);
         },
     },
     'email' : {
         valid: (value, field) => {
             const re = /\S+@\S+\.\S+/;
-            return re.test(value)
+            return re.test(value);
         },
     },
     'password' : {
         valid: (value, field) => {
-            console.log(value);
             const minLowercase  = '(?=.*[a-z])';
             const minUppercase  = '(?=.*[A-Z])';
             const minNumeric    = '(?=.*[0-9])';
             const minSpecial    = '(?=.*[!@#\\$%\\^&])';
             const minLenght     = '(?=.{8,})';
             const re = new RegExp(`^${minLowercase}${minUppercase}${minNumeric}${minSpecial}${minLenght}`);
-            return re.test(value)
+            return re.test(value);
         },
     }
 }

@@ -1,7 +1,7 @@
 # **mp-form-validator**
 It's just a simple form validator with hooks, custom rules, translations, overriding functions.
 
-Bundle size: **5,11KB**
+Bundle size: **5,96KB**
 
 # `In Development`
 
@@ -30,7 +30,9 @@ Params object:
 | errorWrapperClass | string | Class name for errors wrapper |
 | errorClass | string | Class name of single error |
 | errorPosition | string ('before' or 'after') | Where place a error - before or after input |
+| language | string | Lang code, if not found load default english.  |
 | constraints | object | Object of constraints |
+| translations | object | Object of translations. Passed override language passed above. |
 
 Default params object:
 
@@ -40,7 +42,9 @@ var paramas = {
     errorWrapperClass: 'form-errors-msgs',
     errorClass: 'single-error-msg',
     errorPosition: 'before',
-    constraints: {}
+    language: 'en',
+    constraints: {},
+    translations: {}
 }
 ```
 
@@ -142,8 +146,28 @@ var params = {
 
 ## Translations
 
-For now, there no implemented language selector (default is only one - english). Of course, you can easily overwrite messages with own - look above. 
+Create own translations object that should be like example below:
 
+```javascript
+var translations = {
+    Rules: {
+        Errors: {
+            "required": "This field is required.",
+            "phone": "Incorrect phone format. Should be exact 9 digits.",
+            "email": "Incorrect email address.",
+        }
+    }
+}
+```
+
+and pass your object to params:
+
+```javascript
+var params = {
+    ...params,
+    translations: translations
+}
+```
 
 ## Hooks
 
@@ -186,4 +210,4 @@ Notice:
 Sorry for everything - it's my first package, if you found a bug, report - thanks!
 
 ## License
-[MIT](https://choosealicense.com/licenses/mit/)
+[ISC](https://choosealicense.com/licenses/isc/)

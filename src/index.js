@@ -1,9 +1,11 @@
-// import Validator from "./js/validator"
-import "./../bundle/validator.bundle.min"
+import Validator from "./js/validator"
+// import "./../bundle/validator.bundle.min"
+
 
 let v = new Validator({
     debug: false,
     errorPosition: 'after',
+    language: 'pl',
     constraints: {
         inputText: {
             required: true

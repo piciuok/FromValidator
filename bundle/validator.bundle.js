@@ -61,26 +61,25 @@
         },
         'phone' : {
             valid: (value, field) => {
-                const re = /([0-9]+){9}/;
-                return re.test(value)
+                const re = /^([0-9]{9})$/;
+                return re.test(value);
             },
         },
         'email' : {
             valid: (value, field) => {
                 const re = /\S+@\S+\.\S+/;
-                return re.test(value)
+                return re.test(value);
             },
         },
         'password' : {
             valid: (value, field) => {
-                console.log(value);
                 const minLowercase  = '(?=.*[a-z])';
                 const minUppercase  = '(?=.*[A-Z])';
                 const minNumeric    = '(?=.*[0-9])';
                 const minSpecial    = '(?=.*[!@#\\$%\\^&])';
                 const minLenght     = '(?=.{8,})';
                 const re = new RegExp(`^${minLowercase}${minUppercase}${minNumeric}${minSpecial}${minLenght}`);
-                return re.test(value)
+                return re.test(value);
             },
         }
     };
@@ -135,7 +134,7 @@
         }
     };
 
-    var Translations = {
+    var en = {
       "Rules": {
         "Errors": {
           "required": "This field is required.",
@@ -146,6 +145,22 @@
       }
     };
 
+    var pl = {
+      "Rules": {
+        "Errors": {
+          "required": "To pole jest wymagane.",
+          "phone": "Nieprawidłowy numer telefonu. Musi to być dokładnie 9 cyfr.",
+          "email": "Nieprawidłowy adres e-mail.",
+          "password": "Hasło za słabe. Hasło powinno zawierać 1 wielką i małą literę, 1 cyfrę, 1 znak specjalny i mieć co najmniej 8 znaków."
+        }
+      }
+    };
+
+    var Languages = {
+        pl: pl,
+        en: en
+    };
+
     function Validator(options = {}) {
       const _options = {
         debug: false,
@@ -153,7 +168,8 @@
         errorWrapperClass: 'form-errors-msgs',
         errorClass: 'single-error-msg',
         errorPosition: 'before', //before|after
-        translations: Translations,
+        translations: en,
+        language: 'en',
         rules: Rules,
         ...Events
       };
@@ -164,12 +180,32 @@
       };
 
       Object.assign(this, options);
+
+      if(en === options.translations) {
+        this._setTranslations(options.language, true);
+      } else {
+        if(this.debug) console.log(`Translations override by user custom translations passed.`);
+      }
     }
 
     Validator.prototype = {
       construct: Validator,
       errors: {},
       form: null,
+
+      _setTranslations: function(langCode, initialize = false) {
+        if(initialize && langCode === 'en') return;
+
+        const translations = Languages[langCode];
+
+        if( translations === undefined) {
+          if(this.debug) console.log(`Lang '${langCode}' is not supported yet. Load default.`);
+          this.translations = Languages.en;
+        } else {
+          if(this.debug) console.log(`Lang '${langCode}' set successful.`);
+          this.translations = translations;
+        }
+      },
 
       /**
        * Get Value from self deep properties, eg. path = translations.Rules.Errors.required, return a string
@@ -180,9 +216,7 @@
         let obj = start;
 
         if(tree.length === 0) {
-          if(this.debug) {
-            console.log(`You shouldn't read anything from mains properties. Path: ${path}`);
-          }
+          if(this.debug) console.log(`You shouldn't read anything from mains properties. Path: ${path}`);
           return `You shouldn't read anything from main properties. Path: ${path}`;
         }
 
@@ -227,9 +261,7 @@
         this.removeAllErrorMessages();
         this.beforeFormValidation(form);
 
-        if(this.debug) {
-          console.log(`Total form elements: ${form.elements.length}`);
-        }
+        if(this.debug) console.log(`Total form elements: ${form.elements.length}`);
 
         let alreadyChecked = [];
 
@@ -253,9 +285,7 @@
        **/
       validateField: function(field = null, forceValue = false) {
         if(field === null) {
-          if(this.debug) {
-            console.log(`You don't pass a field`);
-          }
+          if(this.debug) console.log(`You don't pass a field`);
           return;
         }
 
@@ -265,16 +295,12 @@
         const fieldHasParams = this.constraints[name] !== undefined;
 
         if(name === "") {
-          if(this.debug) {
-            console.log(`${field} without name!`);
-          }
+          if(this.debug) console.log(`${field} without name!`);
           return;
         }
 
         if(!fieldHasParams) {
-          if(this.debug) {
-            console.log(`No constraints for ${name}`);
-          }
+          if(this.debug) console.log(`No constraints for ${name}`);
           return;
         }
 
@@ -294,9 +320,7 @@
           let _valid = true;
 
           if(this.rules[rule] === undefined) {
-            if(this.debug) {
-              console.log(`Rule not exists for: ${rule}`);
-            }
+            if(this.debug) console.log(`Rule not exists for: ${rule}`);
           } else {
             _valid = this.rules[rule].valid(value, field);
 
@@ -371,9 +395,7 @@
        **/
       addErrorMessagesToField: function(fieldName = null, messages) {
         if(fieldName === null || fieldName === "") {
-          if(this.debug) {
-            console.log(`No fieldName passed`);
-          }
+          if(this.debug) console.log(`No fieldName passed`);
           return;
         }
 

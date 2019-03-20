@@ -1,7 +1,8 @@
 import "./polyfills/index"
 import Rules from "./rules"
 import Events from "./events"
-import Translations from "./i18n/en";
+import DefaultTranslation from "./i18n/en";
+import Languages from "./i18n/index"
 
 function Validator(options = {}) {
   const _options = {
@@ -10,10 +11,11 @@ function Validator(options = {}) {
     errorWrapperClass: 'form-errors-msgs',
     errorClass: 'single-error-msg',
     errorPosition: 'before', //before|after
-    translations: Translations,
+    translations: DefaultTranslation,
+    language: 'en',
     rules: Rules,
     ...Events
-  }
+  };
 
   options = {
     ..._options,
@@ -21,12 +23,32 @@ function Validator(options = {}) {
   };
 
   Object.assign(this, options);
+
+  if(DefaultTranslation === options.translations) {
+    this._setTranslations(options.language, true);
+  } else {
+    if(this.debug) console.log(`Translations override by user custom translations passed.`)
+  }
 }
 
 Validator.prototype = {
   construct: Validator,
   errors: {},
   form: null,
+
+  _setTranslations: function(langCode, initialize = false) {
+    if(initialize && langCode === 'en') return;
+
+    const translations = Languages[langCode];
+
+    if( translations === undefined) {
+      if(this.debug) console.log(`Lang '${langCode}' is not supported yet. Load default.`);
+      this.translations = Languages.en;
+    } else {
+      if(this.debug) console.log(`Lang '${langCode}' set successful.`);
+      this.translations = translations;
+    }
+  },
 
   /**
    * Get Value from self deep properties, eg. path = translations.Rules.Errors.required, return a string
@@ -37,9 +59,7 @@ Validator.prototype = {
     let obj = start;
 
     if(tree.length === 0) {
-      if(this.debug) {
-        console.log(`You shouldn't read anything from mains properties. Path: ${path}`)
-      }
+      if(this.debug) console.log(`You shouldn't read anything from mains properties. Path: ${path}`);
       return `You shouldn't read anything from main properties. Path: ${path}`;
     }
 
@@ -84,9 +104,7 @@ Validator.prototype = {
     this.removeAllErrorMessages();
     this.beforeFormValidation(form);
 
-    if(this.debug) {
-      console.log(`Total form elements: ${form.elements.length}`)
-    }
+    if(this.debug) console.log(`Total form elements: ${form.elements.length}`);
 
     let alreadyChecked = [];
 
@@ -110,9 +128,7 @@ Validator.prototype = {
    **/
   validateField: function(field = null, forceValue = false) {
     if(field === null) {
-      if(this.debug) {
-        console.log(`You don't pass a field`);
-      }
+      if(this.debug) console.log(`You don't pass a field`);
       return;
     }
 
@@ -122,16 +138,12 @@ Validator.prototype = {
     const fieldHasParams = this.constraints[name] !== undefined;
 
     if(name === "") {
-      if(this.debug) {
-        console.log(`${field} without name!`)
-      }
+      if(this.debug) console.log(`${field} without name!`);
       return;
     }
 
     if(!fieldHasParams) {
-      if(this.debug) {
-        console.log(`No constraints for ${name}`)
-      }
+      if(this.debug) console.log(`No constraints for ${name}`);
       return;
     }
 
@@ -151,9 +163,7 @@ Validator.prototype = {
       let _valid = true;
 
       if(this.rules[rule] === undefined) {
-        if(this.debug) {
-          console.log(`Rule not exists for: ${rule}`);
-        }
+        if(this.debug) console.log(`Rule not exists for: ${rule}`);
       } else {
         _valid = this.rules[rule].valid(value, field);
 
@@ -228,9 +238,7 @@ Validator.prototype = {
    **/
   addErrorMessagesToField: function(fieldName = null, messages) {
     if(fieldName === null || fieldName === "") {
-      if(this.debug) {
-        console.log(`No fieldName passed`);
-      }
+      if(this.debug) console.log(`No fieldName passed`);
       return;
     }
 
