@@ -33,6 +33,18 @@ let v = new Validator({
         },
         inputTextarea: {
             required: true,
+        },
+        inputPesel: {
+            pesel: true,
+        },
+        inputRegon: {
+            regon: true,
+        },
+        inputNip: {
+            nip: true,
+        },
+        inputIdCard: {
+            idCard: true,
         }
     }
 });

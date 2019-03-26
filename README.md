@@ -1,7 +1,7 @@
 # **mp-form-validator**
 It's just a simple form validator with hooks, custom rules, translations, overriding functions.
 
-Bundle size: **5,96KB**
+Bundle size: **7,57KB**
 
 # `In Development`
 
@@ -19,7 +19,7 @@ import "mp-form-validator/bundle/validator.bundle.min.js"
 ````
 or
 ```html
-<script src="//unpkg.com/mp-form-validator@1.0.10/bundle/validator.bundle.min.js"></script>
+<script src="//unpkg.com/mp-form-validator@1.0.11/bundle/validator.bundle.min.js"></script>
 ```
 Next, create new Validator instance:
 ```javascript
@@ -101,7 +101,7 @@ Order of processing rules is just order of rules in your **Constraint** object -
 
 ## ...and rules
 
-For now, we have only 4 rules available - yes - it's simple but powerful validator :>
+For now, we have only 8 rules available - yes - it's simple but powerful validator :>
 
 | ruleName | description |
 | --- | --- |
@@ -109,6 +109,10 @@ For now, we have only 4 rules available - yes - it's simple but powerful validat
 | phone | check if have only digits and 9 numbers |
 | email | simple check email  |
 | password | check if password has 1 lower, 1 upper, 1 numeric, 1 special and >= 8 chars |
+| pesel | check for polish pesel number |
+| regon | check for polish regon number |
+| nip | check for polish nip number |
+| idCard | check for polish idCard number |
 
 ## Custom rules
 

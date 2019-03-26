@@ -1,6 +1,6 @@
 {
   "name": "mp-form-validator",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "Simple form validation",
   "main": "index.js",
   "scripts": {

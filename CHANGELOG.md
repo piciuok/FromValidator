@@ -1,5 +1,8 @@
 ## **CHANGELOG**
 
+##### **1.0.11** - 26.03.2019
+- added new validation rules
+
 ##### **1.0.10** - 20.03.2019
 - fix number rule - allowed to type more than 9 digits
 - added more language support
